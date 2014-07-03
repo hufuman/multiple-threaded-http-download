@@ -49,9 +49,10 @@ namespace HttpDownloader
             {
                 result = RangeDownload(url, tmpFilePath, totalSize, func);
             }
+            fsData.Flush();
+            fsData.Close();
             if (result)
             {
-                fsData.Close();
                 File.Delete(filePath);
                 File.Move(tmpFilePath, filePath);
             }
@@ -170,7 +171,7 @@ namespace HttpDownloader
             _thread = new Thread(() =>
             {
                 long pos = _start;
-                for (int i = 0; !_stopped && i < HttpFile.MaxRetryCount; ++i)
+                for (int i = 0; !_stopped && i < HttpFile.MaxRetryCount && pos < _end; ++i)
                 {
                     if (HttpUtil.GetFileRange(_url, pos, _end, (buffer, bufferLen) =>
                     {

@@ -7,6 +7,8 @@ namespace HttpDownloader
     {
         static void Main(string[] args)
         {
+            // HttpUtil.SetProxy("127.0.0.1", 8888);
+
             var file = new HttpFile();
             var progressText = new[]
             {
